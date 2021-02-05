@@ -32,6 +32,9 @@ app.use(routerLogin);
 
 require("./db/connect");
 
-app.listen(config.get("port"), () => {
+// const port = config.get("port");
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
   console.log("Listening...");
 });
