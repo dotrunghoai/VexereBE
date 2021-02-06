@@ -13,12 +13,12 @@ const routerUpload = require("./routers/uploadRouter");
 const routerLogin = require("./routers/loginRouter");
 
 const app = express();
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    optionsSuccessStatus: 200,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     optionsSuccessStatus: 200,
+//   })
+// );
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 
