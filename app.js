@@ -33,8 +33,8 @@ app.use(routerLogin);
 require("./db/connect");
 
 // const port = config.get("port");
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || config.get("port");
 
-app.listen(port, () => {
+app.listen("https://vexere-hoai.herokuapp.com", () => {
   console.log("Listening...");
 });
