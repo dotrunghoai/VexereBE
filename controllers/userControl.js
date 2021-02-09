@@ -59,7 +59,10 @@ const signIn = async (req, res) => {
       {
         _id: foundUser._id,
       },
-      jwtSignature
+      jwtSignature,
+      {
+        expiresIn: 3600,
+      }
     );
     foundUser.tokens.push(token);
     await foundUser.save();
