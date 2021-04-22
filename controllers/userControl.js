@@ -66,7 +66,10 @@ const signIn = async (req, res) => {
     );
     foundUser.tokens.push(token);
     await foundUser.save();
-    res.status(200).send(token);
+    res.status(200).send({
+      token,
+      user: foundUser
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Something went wrong !" });
