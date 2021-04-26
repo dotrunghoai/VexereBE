@@ -62,7 +62,7 @@ const signIn = async (req, res) => {
       },
       jwtSignature,
       {
-        expiresIn: 3600,
+        expiresIn: 7200,
       }
     );
     foundUser.tokens.push(token);
