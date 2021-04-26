@@ -58,6 +58,7 @@ const signIn = async (req, res) => {
     const token = await jwt.sign(
       {
         _id: foundUser._id,
+        user: foundUser.deleteField()
       },
       jwtSignature,
       {
@@ -66,10 +67,7 @@ const signIn = async (req, res) => {
     );
     foundUser.tokens.push(token);
     await foundUser.save();
-    res.status(200).send({
-      token,
-      user: foundUser
-    });
+    res.status(200).send(token);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Something went wrong !" });
