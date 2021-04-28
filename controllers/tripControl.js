@@ -110,7 +110,7 @@ const getTrip = async (req, res) => {
 
 const getAllTrip = async (req, res) => {
   try {
-    const findTrip = await Trip.find()
+    const findTrip = await Trip.find().populate("departurePlace arrivalPlace carID", "stationName licensePlate")
     if (findTrip.length === 0) {
       return res.status(404).send({ message: "Not Found Trip" });
     }
