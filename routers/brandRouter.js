@@ -12,6 +12,6 @@ const router = express.Router();
 router.post("/brand", postBrand);
 router.patch("/brand", patchBrand);
 router.delete("/brand", deleteBrand);
-router.get("/brand", auth(["user"]), getBrand);
+router.get("/brand", auth(["admin"]), getBrand);
 
 module.exports = router;
