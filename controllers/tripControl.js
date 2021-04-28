@@ -108,6 +108,19 @@ const getTrip = async (req, res) => {
   }
 };
 
+const getAllTrip = async (req, res) => {
+  try {
+    const findTrip = await Trip.find()
+    if (findTrip.length === 0) {
+      return res.status(404).send({ message: "Not Found Trip" });
+    }
+    res.status(200).send(findTrip);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Something went wrong !" });
+  }
+};
+
 const bookTrip = async (req, res) => {
   const { tripID } = req.body;
   const session = await mongoose.startSession();
@@ -130,4 +143,4 @@ const bookTrip = async (req, res) => {
   }
 };
 
-module.exports = { postTrip, patchTrip, deleteTrip, getTrip };
+module.exports = { postTrip, patchTrip, deleteTrip, getTrip, getAllTrip };
