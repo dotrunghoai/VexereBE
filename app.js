@@ -11,6 +11,7 @@ const routerTrip = require("./routers/tripRouter");
 const routerUser = require("./routers/userRouter");
 const routerUpload = require("./routers/uploadRouter");
 const routerLogin = require("./routers/loginRouter");
+const routerOrder = require('./routers/orderRouter')
 
 const app = express();
 // app.use(
@@ -38,6 +39,7 @@ app.use(routerTrip);
 app.use(routerUser);
 app.use(routerUpload);
 app.use(routerLogin);
+app.use(routerOrder)
 
 require("./db/connect");
 

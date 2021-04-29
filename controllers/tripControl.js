@@ -122,25 +122,42 @@ const getAllTrip = async (req, res) => {
 };
 
 const bookTrip = async (req, res) => {
-  const { tripID } = req.body;
+  const { tripID, seatID } = req.body;
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
     const foundTrip = await Trip.findById(tripID).session(session);
-    await Trip.create(
+    if (!foundTrip) {
+      return res.status(400).send({ message: 'Invalid Trip, ID not exist!' })
+    }
+    const foundSeat = foundTrip.arrayOfSeat.findIndex(
+      (item) => item._id.toString() === seatID && item.status === 'available'
+    )
+    if (foundSeat === -1) {
+      return res.status(400).send({ message: 'Invalid Seat!' })
+    }
+    foundTrip.arrayOfSeat[foundSeat].userID = req.user._id
+    foundTrip.arrayOfSeat[foundSeat].status = 'booked'
+    await foundTrip.save()
+
+    await Order.create(
       [
         {
           userID: req.user._id,
+          tripID: foundTrip._id,
+          seatID: foundTrip.arrayOfSeat[foundSeat]
         },
       ],
       { session }
     );
     await session.commitTransaction();
     session.endSession();
+    res.status(200).send({ message: 'Book ticket successfully!!!' })
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    res.status(500).send({ message: 'Something went wrong!' })
   }
 };
 
-module.exports = { postTrip, patchTrip, deleteTrip, getTrip, getAllTrip };
+module.exports = { postTrip, patchTrip, deleteTrip, getTrip, getAllTrip, bookTrip };
