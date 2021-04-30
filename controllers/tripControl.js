@@ -142,7 +142,7 @@ const bookTrip = async (req, res) => {
 
     const departurePlace = await Station.findById(foundTrip.departurePlace);
     const arrivalPlace = await Station.findById(foundTrip.arrivalPlace);
-    const seatName = foundSeat.seatName;
+    const seatName = foundTrip.arrayOfSeat[foundSeat].seatName;
     await Order.create(
       [
         {
@@ -151,7 +151,7 @@ const bookTrip = async (req, res) => {
           seatID: foundTrip.arrayOfSeat[foundSeat],
           departurePlace: departurePlace.stationName,
           arrivalPlace: arrivalPlace.stationName,
-          seatName
+          seatName,
         },
       ],
       { session }
