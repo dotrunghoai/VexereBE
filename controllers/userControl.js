@@ -76,7 +76,7 @@ const signIn = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    let foundUser = await User.find()
+    let foundUser = await User.find({ role: 'user' })
     for (let index = 0; index < foundUser.length; index++) {
       foundUser[index] = foundUser[index].deleteField()
     }
