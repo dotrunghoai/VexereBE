@@ -3,8 +3,8 @@ const Order = require("../models/orderModel")
 const getOrder = async (req, res) => {
     try {
         const foundOrder = await Order.find().
-            populate('userID tripID seatID departurePlace',
-                'username email phoneNumber departurePlace arrivalPlace startedDate departureTime seatName stationName -_id')
+            populate('userID tripID',
+                'username email phoneNumber startedDate departureTime -_id')
         // if (foundOrder.length === 0) {
         //     return res.status(404).send({ message: 'Not Found Order' })
         // }
