@@ -17,6 +17,15 @@ const orderSchema = new mongoose.Schema(
       ref: "Seat",
       required: true,
     },
+    departurePlace: {
+      type: String
+    },
+    arrivalPlace: {
+      type: String
+    },
+    seatName: {
+      type: String
+    }
   },
   {
     timestamps: true,
