@@ -77,7 +77,9 @@ const signIn = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     let foundUser = await User.find()
-    foundUser = foundUser.deleteField()
+    for (let index = 0; index < foundUser.length; index++) {
+      foundUser[index] = foundUser[index].deleteField()
+    }
     res.status(200).send(foundUser)
   } catch (error) {
     console.log(error)
