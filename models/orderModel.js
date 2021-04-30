@@ -25,6 +25,16 @@ const orderSchema = new mongoose.Schema(
     },
     seatName: {
       type: String
+    },
+    brandID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Brand',
+      required: true
+    },
+    carID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Car',
+      required: true
     }
   },
   {
