@@ -74,4 +74,15 @@ const signIn = async (req, res) => {
   }
 };
 
-module.exports = { signUp, signIn };
+const getUser = async (req, res) => {
+  try {
+    let foundUser = await User.find()
+    foundUser = foundUser.deleteField()
+    res.status(200).send(foundUser)
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ message: 'Something went wrong!' })
+  }
+}
+
+module.exports = { signUp, signIn, getUser };
