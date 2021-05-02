@@ -22,7 +22,20 @@ const postCar = async (req, res) => {
     foundBrand.carID.push(newCar._id);
     await foundBrand.save();
     const result = await newCar.save();
-    res.status(201).send(result);
+    const newResult = {
+      brandID: {
+        brandName: foundBrand.brandName,
+        brandAddress: foundBrand.brandAddress,
+        _id: brandID
+      },
+      licensePlate,
+      numberOfSeat,
+      statusActive: "Active",
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+      _id: result._id
+    }
+    res.status(201).send(newResult);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Something went wrong !" });
@@ -78,7 +91,7 @@ const getCar = async (req, res) => {
   try {
     const findCar = await Car.find({ statusActive: 'Active' }).populate(
       "brandID",
-      "brandName brandAddress -_id"
+      "brandName brandAddress"
     );
     res.status(200).send(findCar);
   } catch (error) {
