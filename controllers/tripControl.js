@@ -42,7 +42,7 @@ const postTrip = async (req, res) => {
       arrayOfSeat,
       carID,
       price,
-      statusActive: "Active",
+      // statusActive: "Active",
     });
     const result = await newTrip.save();
     const newResult = {
@@ -62,7 +62,7 @@ const postTrip = async (req, res) => {
         licensePlate: foundCar.licensePlate
       },
       price,
-      statusActive: "Active",
+      // statusActive: "Active",
     }
     res.status(201).send(newResult);
   } catch (error) {
@@ -92,17 +92,17 @@ const patchTrip = async (req, res) => {
 const deleteTrip = async (req, res) => {
   try {
     const { tripID } = req.query;
-    const foundTrip = await Trip.findById(tripID);
-    if (!foundTrip) {
-      return res.status(404).send({ message: "Invalid Trip !" });
-    }
     const findOrder = await Order.findOne({ tripID });
     if (findOrder) {
       return res.status(400).send({ message: "Trip was booked" });
     }
-    foundTrip.statusActive = "Inactive";
-    const result = await foundTrip.save();
-    res.status(203).send(result);
+    const foundTrip = await Trip.findByIdAndDelete(tripID);
+    if (!foundTrip) {
+      return res.status(404).send({ message: "Invalid Trip !" });
+    }
+    // foundTrip.statusActive = "Inactive";
+    // const result = await foundTrip.save();
+    res.status(203).send(foundTrip);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Something went wrong !" });

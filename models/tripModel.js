@@ -33,10 +33,10 @@ const tripSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    statusActive: {
-      type: String,
-      required: true,
-    },
+    // statusActive: {
+    //   type: String,
+    //   required: true,
+    // },
   },
   {
     timestamps: true,
