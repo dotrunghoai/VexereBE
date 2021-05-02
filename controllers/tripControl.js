@@ -37,7 +37,8 @@ const postTrip = async (req, res) => {
     const newTrip = new Trip({
       departurePlace,
       arrivalPlace,
-      startedDate: startedDate + " 00:00:00",
+      // startedDate: startedDate + " 00:00:00",
+      startedDate,
       departureTime,
       arrayOfSeat,
       carID,
@@ -54,7 +55,8 @@ const postTrip = async (req, res) => {
         _id: foundStation[1]._id,
         stationName: foundStation[1].stationName,
       },
-      startedDate: startedDate + " 00:00:00",
+      // startedDate: startedDate + " 00:00:00",
+      startedDate,
       departureTime,
       arrayOfSeat,
       carID: {
@@ -78,7 +80,8 @@ const patchTrip = async (req, res) => {
     if (!foundTrip) {
       return res.status(404).send({ message: "Invalid Trip !" });
     }
-    foundTrip.startedDate = startedDate + " 00:00:00";
+    // foundTrip.startedDate = startedDate + " 00:00:00";
+    foundTrip.startedDate = startedDate;
     foundTrip.departureTime = departureTime;
     foundTrip.price = price;
     const result = await foundTrip.save();
