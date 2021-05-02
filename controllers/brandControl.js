@@ -67,7 +67,7 @@ const deleteBrand = async (req, res) => {
 
 const getBrand = async (req, res) => {
   try {
-    const findBrand = await Brand.find().populate(
+    const findBrand = await Brand.find({ statusActive: 'Active' }).populate(
       "carID",
       "licensePlate numberOfSeat statusActive -_id"
     );
