@@ -45,7 +45,26 @@ const postTrip = async (req, res) => {
       statusActive: "Active",
     });
     const result = await newTrip.save();
-    res.status(201).send(result);
+    const newResult = {
+      departurePlace: {
+        _id: foundStation[0]._id,
+        stationName: foundStation[0].stationName,
+      },
+      arrivalPlace: {
+        _id: foundStation[1]._id,
+        stationName: foundStation[1].stationName,
+      },
+      startedDate: startedDate + " 00:00:00",
+      departureTime,
+      arrayOfSeat,
+      carID: {
+        _id: foundCar._id,
+        licensePlate: foundCar.licensePlate
+      },
+      price,
+      statusActive: "Active",
+    }
+    res.status(201).send(newResult);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Something went wrong !" });
