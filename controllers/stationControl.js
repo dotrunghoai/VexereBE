@@ -66,7 +66,7 @@ const deleteStation = async (req, res) => {
 
 const getStation = async (req, res) => {
   try {
-    const findStation = await Station.find();
+    const findStation = await Station.find({ statusActive: 'Active' });
     res.status(200).send(findStation);
   } catch (error) {
     console.log(error);
