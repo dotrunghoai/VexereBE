@@ -64,6 +64,7 @@ const postTrip = async (req, res) => {
         licensePlate: foundCar.licensePlate
       },
       price,
+      _id: result._id
       // statusActive: "Active",
     }
     res.status(201).send(newResult);
