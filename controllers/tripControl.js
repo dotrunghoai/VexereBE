@@ -197,11 +197,14 @@ const bookTrip = async (req, res) => {
 const getTripByProvice = async (req, res) => {
   try {
     const { departureProvice, arrivalProvice, startedDate } = req.query
-    const foundTrip = await Trip.find()
+    const foundTrip = await Trip.find().and([
+      { departureProvice }, { arrivalProvice }, { startedDate }
+    ])
+    res.status(200).send(foundTrip)
   } catch (error) {
     console.log(error)
     res.status(500).send({ message: 'Something went wrong!' })
   }
 }
 
-module.exports = { postTrip, patchTrip, deleteTrip, getTrip, getAllTrip, bookTrip };
+module.exports = { postTrip, patchTrip, deleteTrip, getTrip, getAllTrip, bookTrip, getTripByProvice };

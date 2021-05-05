@@ -8,7 +8,8 @@ const {
   deleteTrip,
   getTrip,
   getAllTrip,
-  bookTrip
+  bookTrip,
+  getTripByProvice
 } = require("../controllers/tripControl");
 
 router.post("/trip", postTrip);
@@ -17,5 +18,6 @@ router.delete("/trip", deleteTrip);
 router.get("/trip", getTrip);
 router.get("/alltrip", getAllTrip);
 router.post('/bookTrip', auth(['user', 'admin']), bookTrip)
+router.get("/tripByProvice", getTripByProvice);
 
 module.exports = router;
