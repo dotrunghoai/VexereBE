@@ -43,6 +43,8 @@ const postTrip = async (req, res) => {
       arrayOfSeat,
       carID,
       price,
+      departureProvice: foundStation[0].provice,
+      arrivalProvice: foundStation[1].provice
       // statusActive: "Active",
     });
     const result = await newTrip.save();
@@ -191,5 +193,15 @@ const bookTrip = async (req, res) => {
     res.status(500).send({ message: 'Something went wrong!' })
   }
 };
+
+const getTripByProvice = async (req, res) => {
+  try {
+    const { departureProvice, arrivalProvice, startedDate } = req.query
+    const foundTrip = await Trip.find()
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ message: 'Something went wrong!' })
+  }
+}
 
 module.exports = { postTrip, patchTrip, deleteTrip, getTrip, getAllTrip, bookTrip };

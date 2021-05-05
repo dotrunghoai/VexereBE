@@ -37,6 +37,14 @@ const tripSchema = new mongoose.Schema(
     //   type: String,
     //   required: true,
     // },
+    departureProvice: {
+      type: String,
+      required: true
+    },
+    arrivalProvice: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true,
