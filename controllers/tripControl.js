@@ -203,7 +203,7 @@ const getTripByProvice = async (req, res) => {
     const foundTrip = await Trip.find().and([
       { departureProvice }, { arrivalProvice }, { startedDate }
     ])
-    res.status(200).send(foundTrip)
+    res.status(200).send({ foundTrip, startedDate })
   } catch (error) {
     console.log(error)
     res.status(500).send({ message: 'Something went wrong!' })
