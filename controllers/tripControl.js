@@ -196,7 +196,10 @@ const bookTrip = async (req, res) => {
 
 const getTripByProvice = async (req, res) => {
   try {
-    const { departureProvice, arrivalProvice, startedDate } = req.query
+    const { departureProvice, arrivalProvice, startedDate } = req.body
+    console.log(departureProvice)
+    console.log(arrivalProvice)
+    console.log(startedDate)
     const foundTrip = await Trip.find().and([
       { departureProvice }, { arrivalProvice }, { startedDate }
     ])
