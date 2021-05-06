@@ -200,10 +200,8 @@ const getTripByProvice = async (req, res) => {
     // console.log(departureProvice)
     // console.log(arrivalProvice)
     // console.log(startedDate)
-    const foundTrip = await Trip.find().and([
-      { departureProvice }, { arrivalProvice }, { startedDate }
-    ])
-    res.status(200).send({ foundTrip, startedDate })
+    const foundTrip = await Trip.find().populate("departurePlace arrivalPlace carID", "stationName licensePlate")
+    res.status(200).send(foundTrip)
   } catch (error) {
     console.log(error)
     res.status(500).send({ message: 'Something went wrong!' })
