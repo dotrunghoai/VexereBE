@@ -44,7 +44,16 @@ const tripSchema = new mongoose.Schema(
     arrivalProvice: {
       type: String,
       required: true
-    }
+    },
+
+    //Ramdom
+    hhTo: Number,
+    mmTo: Number,
+    star: Number,
+    countTrip: Number,
+    countHH: Number,
+    countMM: Number
+    //-----------------------
   },
   {
     timestamps: true,

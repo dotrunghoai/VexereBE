@@ -36,6 +36,17 @@ const postTrip = async (req, res) => {
         });
       }
     );
+
+
+    //Ramdom----------------------------
+    const hhTo = Math.floor(Math.random() * 13 + 10)
+    const mmTo = Math.floor(Math.random() * 49 + 10)
+    const star = (Math.random() * 4 + 1).toFixed(2)
+    const countTrip = Math.floor(Math.random() * 499 + 1)
+    const countHH = Math.floor(Math.random() * 47 + 1)
+    const countMM = Math.floor(Math.random() * 58 + 1)
+    //----------------------------
+
     const newTrip = new Trip({
       departurePlace,
       arrivalPlace,
@@ -46,8 +57,17 @@ const postTrip = async (req, res) => {
       carID,
       price,
       departureProvice: foundStationDepart.provice,
-      arrivalProvice: foundStationArri.provice
+      arrivalProvice: foundStationArri.provice,
       // statusActive: "Active",
+
+      //Ramdom
+      hhTo,
+      mmTo,
+      star,
+      countTrip,
+      countHH,
+      countMM
+      //-----------------------
     });
     const result = await newTrip.save();
     const newResult = {
