@@ -52,8 +52,9 @@ const tripSchema = new mongoose.Schema(
     star: Number,
     countTrip: Number,
     countHH: Number,
-    countMM: Number
+    countMM: Number,
     //-----------------------
+    brandName: String,
   },
   {
     timestamps: true,

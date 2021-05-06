@@ -4,6 +4,7 @@ const Car = require("../models/carModel");
 const { Seat } = require("../models/seatModel");
 const Order = require("../models/orderModel");
 const mongoose = require("mongoose");
+const Brand = require('../models/brandModel')
 
 const postTrip = async (req, res) => {
   try {
@@ -27,6 +28,13 @@ const postTrip = async (req, res) => {
     const foundCar = await Car.findById(carID);
     if (!foundCar) {
       return res.status(404).send({ message: "Invalid Car" });
+    }
+    const foundBrand = await Brand.findById(foundCar.brandID)
+    let brandName = ""
+    if (!foundBrand) {
+      brandName = "Mai Linh"
+    } else {
+      brandName = foundBrand.brandName
     }
     const arrayOfSeat = [...new Array(foundCar.numberOfSeat)].map(
       (item, index) => {
@@ -66,7 +74,8 @@ const postTrip = async (req, res) => {
       star,
       countTrip,
       countHH,
-      countMM
+      countMM,
+      brandName
       //-----------------------
     });
     const result = await newTrip.save();
