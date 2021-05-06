@@ -15,11 +15,13 @@ const postTrip = async (req, res) => {
       carID,
       price,
     } = req.body;
-    const foundStation = await Station.find().or([
-      { _id: departurePlace },
-      { _id: arrivalPlace },
-    ]);
-    if (foundStation.length !== 2) {
+    // const foundStation = await Station.find().or([
+    //   { _id: departurePlace },
+    //   { _id: arrivalPlace },
+    // ]);
+    const foundStationDepart = await Station.findOne({ _id: departurePlace })
+    const foundStationArri = await Station.findOne({ _id: arrivalPlace })
+    if (!foundStationDepart || !foundStationArri) {
       return res.status(404).send({ message: "Invalid Station !" });
     }
     const foundCar = await Car.findById(carID);
@@ -43,19 +45,19 @@ const postTrip = async (req, res) => {
       arrayOfSeat,
       carID,
       price,
-      departureProvice: foundStation[0].provice,
-      arrivalProvice: foundStation[1].provice
+      departureProvice: foundStationDepart.provice,
+      arrivalProvice: foundStationArri.provice
       // statusActive: "Active",
     });
     const result = await newTrip.save();
     const newResult = {
       departurePlace: {
-        _id: foundStation[0]._id,
-        stationName: foundStation[0].stationName,
+        _id: foundStationDepart._id,
+        stationName: foundStationDepart.stationName,
       },
       arrivalPlace: {
-        _id: foundStation[1]._id,
-        stationName: foundStation[1].stationName,
+        _id: foundStationArri._id,
+        stationName: foundStationArri.stationName,
       },
       // startedDate: startedDate + " 00:00:00",
       startedDate,
