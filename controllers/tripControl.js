@@ -194,14 +194,14 @@ const bookTrip = async (req, res) => {
       if (foundSeat === -1) {
         return res.status(400).send({ message: 'Invalid Seat or Seat Booked!' })
       }
+      foundTrip.arrayOfSeat[foundSeat].userID = req.user._id
+      foundTrip.arrayOfSeat[foundSeat].status = 'booked'
     }
-    foundTrip.arrayOfSeat[foundSeat].userID = req.user._id
-    foundTrip.arrayOfSeat[foundSeat].status = 'booked'
     await foundTrip.save()
 
     const departurePlace = await Station.findById(foundTrip.departurePlace);
     const arrivalPlace = await Station.findById(foundTrip.arrivalPlace);
-    const seatName = foundTrip.arrayOfSeat[foundSeat].seatName;
+    // const seatName = foundTrip.arrayOfSeat[foundSeat].seatName;
     const carID = await Car.findById(foundTrip.carID)
     await Order.create(
       [
@@ -212,7 +212,7 @@ const bookTrip = async (req, res) => {
           arrayOfSeat,
           departurePlace: departurePlace.stationName,
           arrivalPlace: arrivalPlace.stationName,
-          seatName,
+          // seatName,
           brandID: carID.brandID,
           carID: foundTrip.carID,
         },
@@ -225,6 +225,7 @@ const bookTrip = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
+    console.log(error)
     res.status(500).send({ message: 'Something went wrong!' })
   }
 };

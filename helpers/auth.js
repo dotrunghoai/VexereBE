@@ -21,7 +21,7 @@ const auth = (roles) => async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: "Something went wrong !" });
+    res.status(500).send({ message: "You are not authorized !" });
   }
 };
 
