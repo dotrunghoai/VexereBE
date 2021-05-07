@@ -203,7 +203,7 @@ const bookTrip = async (req, res) => {
     const arrivalPlace = await Station.findById(foundTrip.arrivalPlace);
     // const seatName = foundTrip.arrayOfSeat[foundSeat].seatName;
     const carID = await Car.findById(foundTrip.carID)
-    await Order.create(
+    const newOrder = await Order.create(
       [
         {
           userID: req.user._id,
@@ -221,7 +221,7 @@ const bookTrip = async (req, res) => {
     );
     await session.commitTransaction();
     session.endSession();
-    res.status(200).send({ message: 'Book ticket successfully!!!' })
+    res.status(200).send(newOrder._id)
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
