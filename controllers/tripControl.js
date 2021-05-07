@@ -178,7 +178,7 @@ const getAllTrip = async (req, res) => {
 };
 
 const bookTrip = async (req, res) => {
-  const { tripID, arrayOfSeat } = req.body;
+  const { tripID, arrayOfSeat, totalPrice } = req.body;
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
@@ -215,6 +215,7 @@ const bookTrip = async (req, res) => {
           // seatName,
           brandID: carID.brandID,
           carID: foundTrip.carID,
+          totalPrice
         },
       ],
       { session }

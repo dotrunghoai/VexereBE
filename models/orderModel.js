@@ -39,6 +39,10 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Car',
       required: true
+    },
+    totalPrice: {
+      type: Number,
+      required: true
     }
   },
   {
