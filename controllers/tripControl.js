@@ -192,7 +192,7 @@ const bookTrip = async (req, res) => {
         (item) => item._id.toString() === seat._id && item.status === 'available'
       )
       if (foundSeat === -1) {
-        return res.status(400).send({ message: 'Invalid Seat or Seat Booked!' })
+        return res.status(400).send({ message: `Seat ${arrayOfSeat[index].seatName}: Invalid Seat or Seat Booked!` })
       }
       foundTrip.arrayOfSeat[foundSeat].userID = req.user._id
       foundTrip.arrayOfSeat[foundSeat].status = 'booked'
@@ -221,7 +221,7 @@ const bookTrip = async (req, res) => {
     );
     await session.commitTransaction();
     session.endSession();
-    res.status(200).send(newOrder._id)
+    res.status(200).send('newOrder')
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
