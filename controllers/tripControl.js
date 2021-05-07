@@ -39,7 +39,7 @@ const postTrip = async (req, res) => {
     const arrayOfSeat = [...new Array(foundCar.numberOfSeat)].map(
       (item, index) => {
         return new Seat({
-          seatName: index + 1,
+          seatName: "A" + (index + 1),
           status: "available",
         });
       }
