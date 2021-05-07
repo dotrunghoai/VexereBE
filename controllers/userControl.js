@@ -74,6 +74,10 @@ const signIn = async (req, res) => {
   }
 };
 
+const sigOut = async (req, res) => {
+
+}
+
 const getUser = async (req, res) => {
   try {
     let foundUser = await User.find({ role: 'user' })

@@ -178,7 +178,7 @@ const getAllTrip = async (req, res) => {
 };
 
 const bookTrip = async (req, res) => {
-  const { tripID, seatID } = req.body;
+  const { tripID, arrayOfSeat } = req.body;
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
@@ -186,11 +186,14 @@ const bookTrip = async (req, res) => {
     if (!foundTrip) {
       return res.status(400).send({ message: 'Invalid Trip, ID not exist!' })
     }
-    const foundSeat = foundTrip.arrayOfSeat.findIndex(
-      (item) => item._id.toString() === seatID && item.status === 'available'
-    )
-    if (foundSeat === -1) {
-      return res.status(400).send({ message: 'Invalid Seat!' })
+    for (let index = 0; index < arrayOfSeat.length; index++) {
+      const seat = arrayOfSeat[index];
+      const foundSeat = foundTrip.arrayOfSeat.findIndex(
+        (item) => item._id.toString() === seat._id && item.status === 'available'
+      )
+      if (foundSeat === -1) {
+        return res.status(400).send({ message: 'Invalid Seat or Seat Booked!' })
+      }
     }
     foundTrip.arrayOfSeat[foundSeat].userID = req.user._id
     foundTrip.arrayOfSeat[foundSeat].status = 'booked'
@@ -205,7 +208,8 @@ const bookTrip = async (req, res) => {
         {
           userID: req.user._id,
           tripID: foundTrip._id,
-          seatID: foundTrip.arrayOfSeat[foundSeat],
+          // seatID: foundTrip.arrayOfSeat[foundSeat],
+          arrayOfSeat,
           departurePlace: departurePlace.stationName,
           arrivalPlace: arrivalPlace.stationName,
           seatName,
