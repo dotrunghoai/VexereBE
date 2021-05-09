@@ -74,8 +74,16 @@ const signIn = async (req, res) => {
   }
 };
 
-const sigOut = async (req, res) => {
-
+const signOut = async (req, res) => {
+  try {
+    const findToken = req.user.tokens.findIndex(item => item === req.token)
+    req.user.tokens.splice(findToken, 1)
+    await req.user.save()
+    res.status(202).send({ message: 'SignOut successfully!' })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ message: 'Something went wrong!' })
+  }
 }
 
 const getUser = async (req, res) => {
@@ -96,9 +104,22 @@ const updateUser = async (req, res) => {
     const { email, phoneNumber } = req.body
     req.user.email = email
     req.user.phoneNumber = phoneNumber
+    const token = await jwt.sign(
+      {
+        _id: req.user._id,
+        user: req.user.deleteField()
+      },
+      jwtSignature,
+      {
+        expiresIn: 7200,
+      }
+    );
+    req.user.tokens.push(token)
+    const findToken = req.user.tokens.findIndex(item => item === req.token)
+    req.user.tokens.splice(findToken, 1)
     let newUser = await req.user.save()
     newUser = newUser.deleteField()
-    res.status(202).send(newUser)
+    res.status(202).send({ newUser, token })
   } catch (error) {
     console.log(error)
     res.status(500).send({ message: 'Something went wrong!' })
@@ -117,4 +138,4 @@ const updatePassword = async (req, res) => {
   }
 }
 
-module.exports = { signUp, signIn, getUser, updateUser, updatePassword };
+module.exports = { signUp, signIn, getUser, updateUser, updatePassword, signOut };
