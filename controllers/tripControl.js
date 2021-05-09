@@ -186,6 +186,7 @@ const bookTrip = async (req, res) => {
     if (!foundTrip) {
       return res.status(400).send({ message: 'Invalid Trip, ID not exist!' })
     }
+    let arrayOfSeatName = []
     for (let index = 0; index < arrayOfSeat.length; index++) {
       const seat = arrayOfSeat[index];
       const foundSeat = foundTrip.arrayOfSeat.findIndex(
@@ -196,6 +197,7 @@ const bookTrip = async (req, res) => {
       }
       foundTrip.arrayOfSeat[foundSeat].userID = req.user._id
       foundTrip.arrayOfSeat[foundSeat].status = 'booked'
+      arrayOfSeatName.push(seat.seatName)
     }
     await foundTrip.save()
 
@@ -209,7 +211,7 @@ const bookTrip = async (req, res) => {
           userID: req.user._id,
           tripID: foundTrip._id,
           // seatID: foundTrip.arrayOfSeat[foundSeat],
-          arrayOfSeat,
+          arrayOfSeat: arrayOfSeatName,
           departurePlace: departurePlace.stationName,
           arrivalPlace: arrivalPlace.stationName,
           // seatName,
