@@ -53,6 +53,7 @@ const deleteOrder = async (req, res) => {
             foundTrip.arrayOfSeat[foundSeat].status = 'available'
         }
         await foundTrip.save()
+        await Order.findByIdAndRemove(orderID)
         res.status(202).send({ message: 'The order has been deleted successfully' })
     } catch (error) {
         console.log(error)
