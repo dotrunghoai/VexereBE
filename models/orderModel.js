@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { seatSchema } = require("./seatModel");
+// const { seatSchema } = require("./seatModel");
 
 const orderSchema = new mongoose.Schema(
   {
@@ -19,7 +19,7 @@ const orderSchema = new mongoose.Schema(
     //   required: true,
     // },
     arrayOfSeat: {
-      type: [seatSchema]
+      type: [String]
     },
     departurePlace: {
       type: String
