@@ -91,4 +91,30 @@ const getUser = async (req, res) => {
   }
 }
 
-module.exports = { signUp, signIn, getUser };
+const updateUser = async (req, res) => {
+  try {
+    const { email, phoneNumber } = req.body
+    req.user.email = email
+    req.user.phoneNumber = phoneNumber
+    let newUser = await req.user.save()
+    newUser = newUser.deleteField()
+    res.status(202).send(newUser)
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ message: 'Something went wrong!' })
+  }
+}
+
+const updatePassword = async (req, res) => {
+  try {
+    const { password } = req.body
+    req.user.password = password
+    await req.user.save()
+    res.status(202).send({ message: 'Update password successfully!' })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ message: 'Something went wrong!' })
+  }
+}
+
+module.exports = { signUp, signIn, getUser, updateUser, updatePassword };
