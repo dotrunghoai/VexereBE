@@ -18,6 +18,7 @@ const getOrder = async (req, res) => {
 const getOrderByUser = async (req, res) => {
     try {
         const foundOrder = await Order.find({ userID: req.user._id })
+            .populate('tripID brandID carID', 'startedDate departureTime brandName licensePlate')
         res.status(200).send(foundOrder)
     } catch (error) {
         console.log(error)
