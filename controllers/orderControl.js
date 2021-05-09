@@ -15,4 +15,14 @@ const getOrder = async (req, res) => {
     }
 }
 
-module.exports = { getOrder }
+const getOrderByUser = async (req, res) => {
+    try {
+        const foundOrder = await Order.find({ userID: req.user._id })
+        res.status(200).send(foundOrder)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ meesage: 'Something went wrong!' })
+    }
+}
+
+module.exports = { getOrder, getOrderByUser }

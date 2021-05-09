@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const { seatSchema } = require("./seatModel");
 
 const orderSchema = new mongoose.Schema(
   {
@@ -13,11 +12,6 @@ const orderSchema = new mongoose.Schema(
       ref: "Trip",
       required: true,
     },
-    // seatID: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Seat",
-    //   required: true,
-    // },
     arrayOfSeat: {
       type: [String]
     },
@@ -27,9 +21,6 @@ const orderSchema = new mongoose.Schema(
     arrivalPlace: {
       type: String
     },
-    // seatName: {
-    //   type: String
-    // },
     brandID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Brand',

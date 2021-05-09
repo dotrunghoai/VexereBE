@@ -203,18 +203,15 @@ const bookTrip = async (req, res) => {
 
     const departurePlace = await Station.findById(foundTrip.departurePlace);
     const arrivalPlace = await Station.findById(foundTrip.arrivalPlace);
-    // const seatName = foundTrip.arrayOfSeat[foundSeat].seatName;
     const carID = await Car.findById(foundTrip.carID)
     const newOrder = await Order.create(
       [
         {
           userID: req.user._id,
           tripID: foundTrip._id,
-          // seatID: foundTrip.arrayOfSeat[foundSeat],
           arrayOfSeat: arrayOfSeatName,
           departurePlace: departurePlace.stationName,
           arrivalPlace: arrivalPlace.stationName,
-          // seatName,
           brandID: carID.brandID,
           carID: foundTrip.carID,
           totalPrice
