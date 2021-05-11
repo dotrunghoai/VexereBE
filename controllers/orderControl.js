@@ -16,11 +16,24 @@ const getOrder = async (req, res) => {
     }
 }
 
-const getOrderByUser = async (req, res) => {
+const getOrderFutureByUser = async (req, res) => {
     try {
         const foundOrder = await Order.find({ userID: req.user._id })
             .populate('tripID brandID carID', 'startedDate departureTime brandName licensePlate')
-        res.status(200).send(foundOrder)
+        const filterOrder = foundOrder.filter(item => item.tripID.departureTime >= new Date())
+        res.status(200).send(filterOrder)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ meesage: 'Something went wrong!' })
+    }
+}
+
+const getOrderPassByUser = async (req, res) => {
+    try {
+        const foundOrder = await Order.find({ userID: req.user._id })
+            .populate('tripID brandID carID', 'startedDate departureTime brandName licensePlate')
+        const filterOrder = foundOrder.filter(item => item.tripID.departureTime < new Date())
+        res.status(200).send(filterOrder)
     } catch (error) {
         console.log(error)
         res.status(500).send({ meesage: 'Something went wrong!' })
@@ -61,4 +74,4 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-module.exports = { getOrder, getOrderByUser, deleteOrder }
+module.exports = { getOrder, getOrderFutureByUser, getOrderPassByUser, deleteOrder }
