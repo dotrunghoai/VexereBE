@@ -94,6 +94,7 @@ const getCar = async (req, res) => {
       "brandName brandAddress"
     );
     res.status(200).send(findCar);
+    // res.status(200).send({ message: 'test moiiw' });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Something went wrong !" });
