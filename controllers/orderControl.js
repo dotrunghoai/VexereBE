@@ -38,7 +38,7 @@ const deleteOrder = async (req, res) => {
         if (!foundTrip) {
             return res.status(404).send({ message: 'Thr trip not found!' })
         }
-        if (foundTrip.startedDate < new Date()) {
+        if (foundTrip.departureTime < new Date()) {
             return res.status(400).send({ message: 'The trip is over!' })
         }
         for (let index = 0; index < foundOrder.arrayOfSeat.length; index++) {
