@@ -18,6 +18,6 @@ router.delete("/trip", deleteTrip);
 router.get("/trip", getTrip);
 router.get("/alltrip", getAllTrip);
 router.post('/bookTrip', auth(['user', 'admin']), bookTrip)
-router.get("/tripByProvice", getTripByProvice);
+router.post("/tripByProvice", getTripByProvice);
 
 module.exports = router;
