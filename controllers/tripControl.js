@@ -232,7 +232,7 @@ const bookTrip = async (req, res) => {
 
 const getTripByProvice = async (req, res) => {
   try {
-    const { departureProvice, arrivalProvice, startedDate } = req.body
+    const { departureProvice, arrivalProvice, startedDate } = req.query
     // console.log(departureProvice)
     // console.log(arrivalProvice)
     // console.log(startedDate)
