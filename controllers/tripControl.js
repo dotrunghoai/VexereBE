@@ -236,7 +236,9 @@ const getTripByProvice = async (req, res) => {
     // console.log(departureProvice)
     // console.log(arrivalProvice)
     // console.log(startedDate)
-    const foundTrip = await Trip.find().populate("departurePlace arrivalPlace carID", "stationName licensePlate")
+    // và departureTime >= Date.now()
+    const foundTrip = await Trip.find({ departureProvice, arrivalProvice, startedDate })
+      .populate("departurePlace arrivalPlace carID", "stationName licensePlate")
     res.status(200).send(foundTrip)
   } catch (error) {
     console.log(error)
