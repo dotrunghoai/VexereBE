@@ -233,10 +233,6 @@ const bookTrip = async (req, res) => {
 const getTripByProvice = async (req, res) => {
   try {
     const { departureProvice, arrivalProvice, startedDate } = req.query
-    // console.log(departureProvice)
-    // console.log(arrivalProvice)
-    // console.log(startedDate)
-    // và departureTime >= Date.now()
     const foundTrip = await Trip.find({ departureProvice, arrivalProvice, startedDate })
       .populate("departurePlace arrivalPlace carID", "stationName licensePlate")
     res.status(200).send(foundTrip)
