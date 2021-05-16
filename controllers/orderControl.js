@@ -74,4 +74,15 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-module.exports = { getOrder, getOrderFutureByUser, getOrderPassByUser, deleteOrder }
+const getProfit5Month = async (req, res) => {
+    try {
+        const findOrder = await Order.find().populate('tripID', 'departureTime')
+        const orderFilter = findOrder.filter(item => item.tripID.departureTime > new Date())
+        res.status(200).send(orderFilter)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ meesage: 'Something went wrong!' })
+    }
+}
+
+module.exports = { getOrder, getOrderFutureByUser, getOrderPassByUser, deleteOrder, getProfit5Month }

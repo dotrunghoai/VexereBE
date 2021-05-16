@@ -214,7 +214,8 @@ const bookTrip = async (req, res) => {
           arrivalPlace: arrivalPlace.stationName,
           brandID: carID.brandID,
           carID: foundTrip.carID,
-          totalPrice
+          totalPrice,
+          departureTime: foundTrip.departureTime
         },
       ],
       { session }
