@@ -236,9 +236,17 @@ const getTop5Brand = async (req, res) => {
                     _id: "$brandName",
                     count: { $sum: 1 }
                 }
-            }
+            },
+            { $sort: { count: -1, _id: 1 } },
+            { $limit: 5 }
         ])
-        res.status(200).send(findTopBrand)
+        let labelArr = []
+        let seriesArr = []
+        for (let index = 0; index < findTopBrand.length; index++) {
+            labelArr.push(findTopBrand[index]._id)
+            seriesArr.push(findTopBrand[index].count)
+        }
+        res.status(200).send({ labelArr, seriesArr })
     } catch (error) {
         console.log(error)
         res.status(500).send({ message: 'Something went wrong!' })
