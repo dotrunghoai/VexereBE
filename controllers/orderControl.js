@@ -12,7 +12,7 @@ const getOrder = async (req, res) => {
         res.status(200).send(foundOrder)
     } catch (error) {
         console.log(error)
-        res.status(500).send({ meesage: 'Something went wrong!' })
+        res.status(500).send({ message: 'Something went wrong!' })
     }
 }
 
@@ -24,7 +24,7 @@ const getOrderFutureByUser = async (req, res) => {
         res.status(200).send(filterOrder)
     } catch (error) {
         console.log(error)
-        res.status(500).send({ meesage: 'Something went wrong!' })
+        res.status(500).send({ message: 'Something went wrong!' })
     }
 }
 
@@ -36,7 +36,7 @@ const getOrderPassByUser = async (req, res) => {
         res.status(200).send(filterOrder)
     } catch (error) {
         console.log(error)
-        res.status(500).send({ meesage: 'Something went wrong!' })
+        res.status(500).send({ message: 'Something went wrong!' })
     }
 }
 
@@ -70,7 +70,7 @@ const deleteOrder = async (req, res) => {
         res.status(202).send({ message: 'The order has been deleted successfully' })
     } catch (error) {
         console.log(error)
-        res.status(500).send({ meesage: 'Something went wrong!' })
+        res.status(500).send({ message: 'Something went wrong!' })
     }
 }
 
@@ -224,8 +224,25 @@ const getProfit5Month = async (req, res) => {
         res.status(200).send({ categoryArr, dataArr })
     } catch (error) {
         console.log(error)
-        res.status(500).send({ meesage: 'Something went wrong!' })
+        res.status(500).send({ message: 'Something went wrong!' })
     }
 }
 
-module.exports = { getOrder, getOrderFutureByUser, getOrderPassByUser, deleteOrder, getProfit5Month }
+const getTop5Brand = async (req, res) => {
+    try {
+        const findTopBrand = await Order.aggregate([
+            {
+                $group: {
+                    _id: "$brandName",
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+        res.status(200).send(findTopBrand)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: 'Something went wrong!' })
+    }
+}
+
+module.exports = { getOrder, getOrderFutureByUser, getOrderPassByUser, deleteOrder, getProfit5Month, getTop5Brand }
