@@ -221,10 +221,7 @@ const getProfit5Month = async (req, res) => {
             dataArr.push(0)
         }
 
-        res.status(200).send({
-            categoryArr,
-            dataArr
-        })
+        res.status(200).send({ categoryArr, dataArr })
     } catch (error) {
         console.log(error)
         res.status(500).send({ meesage: 'Something went wrong!' })

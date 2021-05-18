@@ -38,6 +38,10 @@ const orderSchema = new mongoose.Schema(
     departureTime: {
       type: Date,
       required: true
+    },
+    brandName: {
+      type: String,
+      required: true
     }
   },
   {

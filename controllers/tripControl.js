@@ -215,7 +215,8 @@ const bookTrip = async (req, res) => {
           brandID: carID.brandID,
           carID: foundTrip.carID,
           totalPrice,
-          departureTime: foundTrip.departureTime
+          departureTime: foundTrip.departureTime,
+          brandName: foundTrip.brandName,
         },
       ],
       { session }
