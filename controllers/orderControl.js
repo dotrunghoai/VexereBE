@@ -74,11 +74,62 @@ const deleteOrder = async (req, res) => {
     }
 }
 
+
+const getTop5Station = async (req, res) => {
+    try {
+        const findTopStation = await Order.aggregate([
+            {
+                $group: {
+                    _id: "$departurePlace",
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { count: 1, _id: 1 } },
+            { $limit: 5 }
+        ])
+        let categoryArr = []
+        let dataArr = []
+        for (let index = 0; index < findTopStation.length; index++) {
+            categoryArr.push(findTopStation[index]._id)
+            dataArr.push(findTopStation[index].count)
+        }
+        res.status(200).send({ categoryArr, dataArr })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: 'Something went wrong!' })
+    }
+}
+
+const getTop5Brand = async (req, res) => {
+    try {
+        const findTopBrand = await Order.aggregate([
+            {
+                $group: {
+                    _id: "$brandName",
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { count: -1, _id: 1 } },
+            { $limit: 5 }
+        ])
+        let labelArr = []
+        let seriesArr = []
+        for (let index = 0; index < findTopBrand.length; index++) {
+            labelArr.push(findTopBrand[index]._id)
+            seriesArr.push(findTopBrand[index].count)
+        }
+        res.status(200).send({ labelArr, seriesArr })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: 'Something went wrong!' })
+    }
+}
+
 const getProfit5Month = async (req, res) => {
     try {
         const current = new Date();
 
-        const prev1Month = new Date(current.setMonth(current.getMonth() - 1));
+        const prev1Month = new Date(current.setMonth(current.getMonth()));
         const formatPrev1 = prev1Month.toLocaleString('en-US', { month: '2-digit', year: 'numeric' })
         const firstDayPrev1 = new Date(prev1Month.getFullYear(), prev1Month.getMonth(), 1);
         const lastDayPrev1 = new Date(prev1Month.getFullYear(), prev1Month.getMonth() + 1, 0, 23, 59, 59, 999);
@@ -221,56 +272,6 @@ const getProfit5Month = async (req, res) => {
             dataArr.push(0)
         }
 
-        res.status(200).send({ categoryArr, dataArr })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({ message: 'Something went wrong!' })
-    }
-}
-
-const getTop5Brand = async (req, res) => {
-    try {
-        const findTopBrand = await Order.aggregate([
-            {
-                $group: {
-                    _id: "$brandName",
-                    count: { $sum: 1 }
-                }
-            },
-            { $sort: { count: -1, _id: 1 } },
-            { $limit: 5 }
-        ])
-        let labelArr = []
-        let seriesArr = []
-        for (let index = 0; index < findTopBrand.length; index++) {
-            labelArr.push(findTopBrand[index]._id)
-            seriesArr.push(findTopBrand[index].count)
-        }
-        res.status(200).send({ labelArr, seriesArr })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({ message: 'Something went wrong!' })
-    }
-}
-
-const getTop5Station = async (req, res) => {
-    try {
-        const findTopStation = await Order.aggregate([
-            {
-                $group: {
-                    _id: "$departurePlace",
-                    count: { $sum: 1 }
-                }
-            },
-            { $sort: { count: 1, _id: 1 } },
-            { $limit: 5 }
-        ])
-        let categoryArr = []
-        let dataArr = []
-        for (let index = 0; index < findTopStation.length; index++) {
-            categoryArr.push(findTopStation[index]._id)
-            dataArr.push(findTopStation[index].count)
-        }
         res.status(200).send({ categoryArr, dataArr })
     } catch (error) {
         console.log(error)
