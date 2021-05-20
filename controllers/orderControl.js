@@ -253,4 +253,29 @@ const getTop5Brand = async (req, res) => {
     }
 }
 
-module.exports = { getOrder, getOrderFutureByUser, getOrderPassByUser, deleteOrder, getProfit5Month, getTop5Brand }
+const getTop5Station = async (req, res) => {
+    try {
+        const findTopStation = await Order.aggregate([
+            {
+                $group: {
+                    _id: "$departurePlace",
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { count: 1, _id: 1 } },
+            { $limit: 5 }
+        ])
+        let categoryArr = []
+        let dataArr = []
+        for (let index = 0; index < findTopStation.length; index++) {
+            categoryArr.push(findTopStation[index]._id)
+            dataArr.push(findTopStation[index].count)
+        }
+        res.status(200).send({ categoryArr, dataArr })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: 'Something went wrong!' })
+    }
+}
+
+module.exports = { getOrder, getOrderFutureByUser, getOrderPassByUser, deleteOrder, getProfit5Month, getTop5Brand, getTop5Station }
