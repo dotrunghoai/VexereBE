@@ -74,7 +74,7 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-
+//-----------CHART---------------
 const getTop5Station = async (req, res) => {
     try {
         const findTopStation = await Order.aggregate([
@@ -125,11 +125,171 @@ const getTop5Brand = async (req, res) => {
     }
 }
 
-const getProfit5Month = async (req, res) => {
+const getCountOrder = async (req, res) => {
     try {
         const current = new Date();
 
-        const prev1Month = new Date(current.setMonth(current.getMonth()));
+        const currentMonth = new Date(current.setMonth(current.getMonth()));
+        const formatCurrent = currentMonth.toLocaleString('en-US', { month: '2-digit', year: 'numeric' })
+        const firstDayCurrent = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+        const lastDayCurrent = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0, 23, 59, 59, 999);
+
+        const prev1Month = new Date(current.setMonth(current.getMonth() - 1));
+        const formatPrev1 = prev1Month.toLocaleString('en-US', { month: '2-digit', year: 'numeric' })
+        const firstDayPrev1 = new Date(prev1Month.getFullYear(), prev1Month.getMonth(), 1);
+        const lastDayPrev1 = new Date(prev1Month.getFullYear(), prev1Month.getMonth() + 1, 0, 23, 59, 59, 999);
+
+        const prev2Month = new Date(current.setMonth(current.getMonth() - 1));
+        const formatPrev2 = prev2Month.toLocaleString('en-US', { month: '2-digit', year: 'numeric' })
+        const firstDayPrev2 = new Date(prev2Month.getFullYear(), prev2Month.getMonth(), 1);
+        const lastDayPrev2 = new Date(prev2Month.getFullYear(), prev2Month.getMonth() + 1, 0, 23, 59, 59, 999);
+
+        const prev3Month = new Date(current.setMonth(current.getMonth() - 1));
+        const formatPrev3 = prev3Month.toLocaleString('en-US', { month: '2-digit', year: 'numeric' })
+        const firstDayPrev3 = new Date(prev3Month.getFullYear(), prev3Month.getMonth(), 1);
+        const lastDayPrev3 = new Date(prev3Month.getFullYear(), prev3Month.getMonth() + 1, 0, 23, 59, 59, 999);
+
+        const prev4Month = new Date(current.setMonth(current.getMonth() - 1));
+        const formatPrev4 = prev4Month.toLocaleString('en-US', { month: '2-digit', year: 'numeric' })
+        const firstDayPrev4 = new Date(prev4Month.getFullYear(), prev4Month.getMonth(), 1);
+        const lastDayPrev4 = new Date(prev4Month.getFullYear(), prev4Month.getMonth() + 1, 0, 23, 59, 59, 999);
+
+        const countOrderCurrent = await Order.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { departureTime: { $gte: firstDayCurrent } },
+                        { departureTime: { $lte: lastDayCurrent } },
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+
+        const countOrderPrev1Month = await Order.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { departureTime: { $gte: firstDayPrev1 } },
+                        { departureTime: { $lte: lastDayPrev1 } },
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+
+        const countOrderPrev2Month = await Order.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { departureTime: { $gte: firstDayPrev2 } },
+                        { departureTime: { $lte: lastDayPrev2 } },
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+
+        const countOrderPrev3Month = await Order.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { departureTime: { $gte: firstDayPrev3 } },
+                        { departureTime: { $lte: lastDayPrev3 } },
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+
+        const countOrderPrev4Month = await Order.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { departureTime: { $gte: firstDayPrev4 } },
+                        { departureTime: { $lte: lastDayPrev4 } },
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+
+        let countOrderArr = []
+        if (countOrderPrev4Month.length > 0) {
+            countOrderArr.push(countOrderPrev4Month[0].count)
+        } else {
+            countOrderArr.push(0)
+        }
+        if (countOrderPrev3Month.length > 0) {
+            countOrderArr.push(countOrderPrev3Month[0].count)
+        } else {
+            countOrderArr.push(0)
+        }
+        if (countOrderPrev2Month.length > 0) {
+            countOrderArr.push(countOrderPrev2Month[0].count)
+        } else {
+            countOrderArr.push(0)
+        }
+        if (countOrderPrev1Month.length > 0) {
+            countOrderArr.push(countOrderPrev1Month[0].count)
+        } else {
+            countOrderArr.push(0)
+        }
+        if (countOrderCurrent.length > 0) {
+            countOrderArr.push(countOrderCurrent[0].count)
+        } else {
+            countOrderArr.push(0)
+        }
+
+        let monthArr = []
+        monthArr.push(formatPrev4)
+        monthArr.push(formatPrev3)
+        monthArr.push(formatPrev2)
+        monthArr.push(formatPrev1)
+        monthArr.push(formatCurrent)
+
+        res.status(200).send({ monthArr, countOrderArr })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: 'Something went wrong!' })
+    }
+}
+
+const getProfit6Month = async (req, res) => {
+    try {
+        const current = new Date();
+
+        const currentMonth = new Date(current.setMonth(current.getMonth()));
+        const formatCurrent = currentMonth.toLocaleString('en-US', { month: '2-digit', year: 'numeric' })
+        const firstDayCurrent = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+        const lastDayCurrent = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0, 23, 59, 59, 999);
+
+        const prev1Month = new Date(current.setMonth(current.getMonth() - 1));
         const formatPrev1 = prev1Month.toLocaleString('en-US', { month: '2-digit', year: 'numeric' })
         const firstDayPrev1 = new Date(prev1Month.getFullYear(), prev1Month.getMonth(), 1);
         const lastDayPrev1 = new Date(prev1Month.getFullYear(), prev1Month.getMonth() + 1, 0, 23, 59, 59, 999);
@@ -279,4 +439,13 @@ const getProfit5Month = async (req, res) => {
     }
 }
 
-module.exports = { getOrder, getOrderFutureByUser, getOrderPassByUser, deleteOrder, getProfit5Month, getTop5Brand, getTop5Station }
+module.exports = {
+    getOrder,
+    getOrderFutureByUser,
+    getOrderPassByUser,
+    deleteOrder,
+    getTop5Station,
+    getTop5Brand,
+    getCountOrder,
+    getProfit6Month,
+}
