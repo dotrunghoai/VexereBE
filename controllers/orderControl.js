@@ -314,7 +314,7 @@ const getProfit6Month = async (req, res) => {
         const firstDayPrev5 = new Date(prev5Month.getFullYear(), prev5Month.getMonth(), 1);
         const lastDayPrev5 = new Date(prev5Month.getFullYear(), prev5Month.getMonth() + 1, 0, 23, 59, 59, 999);
 
-        const sumProfitCurrentMonth = await Order.aggregate([
+        const sumRevenueCurrentMonth = await Order.aggregate([
             {
                 $match: {
                     $and: [
@@ -332,7 +332,7 @@ const getProfit6Month = async (req, res) => {
             }
         ])
 
-        const sumProfitPre1Month = await Order.aggregate([
+        const sumRevenuePre1Month = await Order.aggregate([
             {
                 $match: {
                     $and: [
@@ -350,7 +350,7 @@ const getProfit6Month = async (req, res) => {
             }
         ])
 
-        const sumProfitPre2Month = await Order.aggregate([
+        const sumRevenuePre2Month = await Order.aggregate([
             {
                 $match: {
                     $and: [
@@ -368,7 +368,7 @@ const getProfit6Month = async (req, res) => {
             }
         ])
 
-        const sumProfitPre3Month = await Order.aggregate([
+        const sumRevenuePre3Month = await Order.aggregate([
             {
                 $match: {
                     $and: [
@@ -386,7 +386,7 @@ const getProfit6Month = async (req, res) => {
             }
         ])
 
-        const sumProfitPre4Month = await Order.aggregate([
+        const sumRevenuePre4Month = await Order.aggregate([
             {
                 $match: {
                     $and: [
@@ -404,7 +404,7 @@ const getProfit6Month = async (req, res) => {
             }
         ])
 
-        const sumProfitPre5Month = await Order.aggregate([
+        const sumRevenuePre5Month = await Order.aggregate([
             {
                 $match: {
                     $and: [
@@ -423,39 +423,52 @@ const getProfit6Month = async (req, res) => {
         ])
 
         let categoryArr = [formatPrev5, formatPrev4, formatPrev3, formatPrev2, formatPrev1, formatCurrent]
-        let dataArr = []
-        if (sumProfitPre5Month.length > 0) {
-            dataArr.push(sumProfitPre5Month[0].totalAmount)
+        let dataRevenueArr = []
+        let dataProfitArr = []
+        if (sumRevenuePre5Month.length > 0) {
+            dataRevenueArr.push(sumRevenuePre5Month[0].totalAmount)
+            dataProfitArr.push(sumRevenuePre5Month[0].totalAmount / 2)
         } else {
-            dataArr.push(0)
+            dataRevenueArr.push(0)
+            dataProfitArr.push(0)
         }
-        if (sumProfitPre4Month.length > 0) {
-            dataArr.push(sumProfitPre4Month[0].totalAmount)
+        if (sumRevenuePre4Month.length > 0) {
+            dataRevenueArr.push(sumRevenuePre4Month[0].totalAmount)
+            dataProfitArr.push(sumRevenuePre4Month[0].totalAmount / 2)
         } else {
-            dataArr.push(0)
+            dataRevenueArr.push(0)
+            dataProfitArr.push(0)
         }
-        if (sumProfitPre3Month.length > 0) {
-            dataArr.push(sumProfitPre3Month[0].totalAmount)
+        if (sumRevenuePre3Month.length > 0) {
+            dataRevenueArr.push(sumRevenuePre3Month[0].totalAmount)
+            dataProfitArr.push(sumRevenuePre3Month[0].totalAmount / 2)
         } else {
-            dataArr.push(0)
+            dataRevenueArr.push(0)
+            dataProfitArr.push(0)
         }
-        if (sumProfitPre2Month.length > 0) {
-            dataArr.push(sumProfitPre2Month[0].totalAmount)
+        if (sumRevenuePre2Month.length > 0) {
+            dataRevenueArr.push(sumRevenuePre2Month[0].totalAmount)
+            dataProfitArr.push(sumRevenuePre2Month[0].totalAmount / 2)
         } else {
-            dataArr.push(0)
+            dataRevenueArr.push(0)
+            dataProfitArr.push(0)
         }
-        if (sumProfitPre1Month.length > 0) {
-            dataArr.push(sumProfitPre1Month[0].totalAmount)
+        if (sumRevenuePre1Month.length > 0) {
+            dataRevenueArr.push(sumRevenuePre1Month[0].totalAmount)
+            dataProfitArr.push(sumRevenuePre1Month[0].totalAmount / 2)
         } else {
-            dataArr.push(0)
+            dataRevenueArr.push(0)
+            dataProfitArr.push(0)
         }
-        if (sumProfitCurrentMonth.length > 0) {
-            dataArr.push(sumProfitCurrentMonth[0].totalAmount)
+        if (sumRevenueCurrentMonth.length > 0) {
+            dataRevenueArr.push(sumRevenueCurrentMonth[0].totalAmount)
+            dataProfitArr.push(sumRevenueCurrentMonth[0].totalAmount / 2)
         } else {
-            dataArr.push(0)
+            dataRevenueArr.push(0)
+            dataProfitArr.push(0)
         }
 
-        res.status(200).send({ categoryArr, dataArr })
+        res.status(200).send({ categoryArr, dataRevenueArr, dataProfitArr })
     } catch (error) {
         console.log(error)
         res.status(500).send({ message: 'Something went wrong!' })
