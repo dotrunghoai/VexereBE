@@ -11,6 +11,6 @@ router.delete('/order', auth(['user']), deleteOrder)
 router.get('/top5Brand', auth(['admin']), getTop5Brand)
 router.get('/top5Station', auth(['admin']), getTop5Station)
 router.get('/countOrder', auth(['admin']), getCountOrder)
-router.get('/profit5Month', auth(['admin']), getProfit6Month)
+router.get('/profit6Month', auth(['admin']), getProfit6Month)
 
 module.exports = router

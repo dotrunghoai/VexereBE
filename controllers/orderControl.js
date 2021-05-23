@@ -314,6 +314,24 @@ const getProfit6Month = async (req, res) => {
         const firstDayPrev5 = new Date(prev5Month.getFullYear(), prev5Month.getMonth(), 1);
         const lastDayPrev5 = new Date(prev5Month.getFullYear(), prev5Month.getMonth() + 1, 0, 23, 59, 59, 999);
 
+        const sumProfitCurrentMonth = await Order.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { departureTime: { $gte: firstDayCurrent } },
+                        { departureTime: { $lte: lastDayCurrent } },
+                    ]
+                }
+            },
+            {
+                $group:
+                {
+                    _id: null,
+                    totalAmount: { $sum: '$totalPrice' }
+                }
+            }
+        ])
+
         const sumProfitPre1Month = await Order.aggregate([
             {
                 $match: {
@@ -404,7 +422,7 @@ const getProfit6Month = async (req, res) => {
             }
         ])
 
-        let categoryArr = [formatPrev5, formatPrev4, formatPrev3, formatPrev2, formatPrev1]
+        let categoryArr = [formatPrev5, formatPrev4, formatPrev3, formatPrev2, formatPrev1, formatCurrent]
         let dataArr = []
         if (sumProfitPre5Month.length > 0) {
             dataArr.push(sumProfitPre5Month[0].totalAmount)
@@ -428,6 +446,11 @@ const getProfit6Month = async (req, res) => {
         }
         if (sumProfitPre1Month.length > 0) {
             dataArr.push(sumProfitPre1Month[0].totalAmount)
+        } else {
+            dataArr.push(0)
+        }
+        if (sumProfitCurrentMonth.length > 0) {
+            dataArr.push(sumProfitCurrentMonth[0].totalAmount)
         } else {
             dataArr.push(0)
         }
