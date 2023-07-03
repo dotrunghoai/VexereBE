@@ -1,3 +1,3 @@
-# Deploy to vercel
+# Deploy to Render
 
-- `npm install`
+- `git push` is automatic deploy
