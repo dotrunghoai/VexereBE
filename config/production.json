@@ -1,6 +1,6 @@
 {
     "dbURL": "mongodb+srv://admin3:admin3@cluster0.5himp.mongodb.net/vexere3?retryWrites=true&w=majority",
-    "port": "https://vexere-be.vercel.app",
+    "port": "https://vexere-rpau.onrender.com/",
     "sgAPIKey": "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",
     "jwtSignature": "vexereJWT"
 }
